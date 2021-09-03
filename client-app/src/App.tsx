@@ -1,21 +1,24 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Header, Icon, List } from 'semantic-ui-react';
 import axios from 'axios';
 
 import './App.css';
+interface IActivity {
 
-class App extends Component {
-  state ={
-    values:[]
-  }
+}
+const App  = () => {
+  
+  const [activities, setActivities] = useState<IActivity[]>([]);
 
-  componentDidMount(){
+  useEffect(() => {
+
     axios.get("http://localhost:5000/api/Values").then(response => {
-      this.setState({values: response.data});
+      setActivities(response.data);
     
     }).catch();
-  }
-  render(){
+
+  }, []);
+  
     return (
       <div>
         <Header as='h2'>
@@ -26,13 +29,13 @@ class App extends Component {
           
         </List>
         <ul>
-            {this.state.values.map((value:any) =>{
+            {activities.values.map((value:any) =>{
               <li key={value.id}>{value.name}</li>
             })}
           </ul>
       </div>
     );
-  }
+  
     
 
     
