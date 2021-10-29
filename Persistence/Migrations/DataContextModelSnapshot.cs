@@ -44,37 +44,6 @@ namespace Persistence.Migrations
 
                     b.ToTable("Activities");
                 });
-
-            modelBuilder.Entity("Domain.Value", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Values");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            name = "Value 101"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            name = "Value 102"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            name = "Value 10"
-                        });
-                });
 #pragma warning restore 612, 618
         }
     }
