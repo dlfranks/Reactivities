@@ -8,9 +8,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
+
 using Microsoft.AspNetCore.Identity;
 using Domain;
+using Persistence;
 
 namespace API
 {
