@@ -45,9 +45,6 @@ namespace Persistence.Migrations
                     b.ToTable("Activities");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("Domain.Value", b =>
-=======
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -145,7 +142,6 @@ namespace Persistence.Migrations
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
->>>>>>> b5dca4dc7e4410c77dac5a44d2e463e35f556e3a
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -28,14 +28,9 @@ namespace API
                 {
                     var context =
                     services.GetRequiredService<DataContext>();
-<<<<<<< HEAD
-                    context.Database.Migrate();
-                    Seed.SeedActivities(context);
-=======
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     await context.Database.MigrateAsync();
                     await Seed.SeedData(context, userManager);              
->>>>>>> b5dca4dc7e4410c77dac5a44d2e463e35f556e3a
 
 
                 }
@@ -46,14 +41,9 @@ namespace API
                     logger.LogError(ex, "An error occured during migration");
                 }
             }
-<<<<<<< HEAD
-
-            host.Run();
-=======
             
             await host.RunAsync();
             
->>>>>>> b5dca4dc7e4410c77dac5a44d2e463e35f556e3a
 
 
         }
