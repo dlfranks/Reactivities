@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
 
+    [Authorize]
     [AllowAnonymous]
     public class ActivitiesController : BaseApiController
     {
@@ -22,6 +23,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new List.Query()));
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivity(Guid id)
         {
