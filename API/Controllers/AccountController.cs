@@ -74,6 +74,8 @@ namespace API.Controllers
             return BadRequest("Problem registering user");
         }
 
+        [Authorize]
+        [HttpGet]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
