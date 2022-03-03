@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { Activity } from '../models/Activity';
 import { history } from '../../index';
 import { store } from '../stores/store';
 import { User, UserFormValues } from '../models/user';
+import { Activity, ActivityFormValues } from '../models/activity';
+
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -74,10 +75,10 @@ const requests = {
 const Activities = {
     list: () => requests.get<Activity[]>('/activities'),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-    create: (activity: Activity) => requests.post<void>('/activities/', activity),
-    update: (activity: Activity) => requests.put<void>(`/activities/${activity.id}`, activity),
-    delete: (id: string) => requests.del<void>(`/activities/${id}`)
-    
+    create: (activity: ActivityFormValues) => requests.post<void>('/activities/', activity),
+    update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
+    delete: (id: string) => requests.del<void>(`/activities/${id}`),
+    attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
 }
 
 const Account = {
