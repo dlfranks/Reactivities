@@ -442,4 +442,4 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-API/reactivaties.db
+API/*.db
