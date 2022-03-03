@@ -16,7 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.1" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   
 </Project>
