@@ -2,7 +2,6 @@ import React from 'react'
 import { Segment, List, Label, Item, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-import { Profile } from '../../../app/models/profile'
 import { Activity } from '../../../app/models/activity'
 
 
@@ -22,7 +21,7 @@ export default observer(function ActivityDetailedSidebar({ activity: { attendees
                 inverted
                 color='teal'
             >
-                {attendees.length} {attendees.length == 1 ? 'Person': 'People'} going
+                {attendees.length} {attendees.length === 1 ? 'Person': 'People'} going
             </Segment>
             <Segment attached>
                 <List relaxed divided>
