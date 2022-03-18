@@ -1,8 +1,9 @@
+import { observer } from 'mobx-react-lite';
 import { Link, NavLink } from 'react-router-dom';
 import { Container, Menu, Button, Image, Dropdown } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
 
-export default function NavBar() {
+export default observer(function NavBar() {
     const { userStore : {user, logout}} = useStore();
     return (
         <Menu inverted fixed='top'>
@@ -28,4 +29,4 @@ export default function NavBar() {
             </Container>
         </Menu>
     )
-}
+})

@@ -72,7 +72,7 @@ export default observer(function ProfilePhotos({profile}: Props) {
                                                                 icon='trash'
                                                                 name={photo.id}
                                                                 disabled={photo.isMain}
-                                                                loading={target === photo.id && uploading}
+                                                                loading={target === photo.id && loading}
                                                                 onClick={e => handleDeletePhoto(photo, e)}
                                                             />
 

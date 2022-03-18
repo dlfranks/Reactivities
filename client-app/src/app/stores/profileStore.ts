@@ -60,20 +60,20 @@ export default class ProfileStore {
     }
 
     deletePhoto = async (photo: Photo) => {
-        this.uploading = true;
+        this.loading = true;
         try {
                 await agent.Profiles.deletePhoto(photo.id);
                 runInAction(() => {
                     if (this.profile) {
                         this.profile.photos = this.profile.photos?.filter(a => a.id !== photo.id);
-                        this.uploading = false;
+                        this.loading = false;
                     }
                     
                 })
             
         } catch (error) {
             console.log(error);
-            runInAction(() => this.uploading = false);
+            runInAction(() => this.loading = false);
         }
     }
 
@@ -93,5 +93,29 @@ export default class ProfileStore {
         } catch (error) {
             runInAction(() => this.profile)
         }
+    }
+
+    updateProfile = async (profile: Profile) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.updateProfile(profile);
+
+            runInAction(() => {
+                if (this.profile) {
+                    this.profile.displayName = profile.displayName;
+                    this.profile.bio = profile.bio;
+                }
+                this.loading = false;
+                
+            })
+            
+        } catch (error) {
+            runInAction(() => this.profile);
+            this.loading = false;
+        }
+    }
+
+    setProfile = (profile: Profile) => {
+        this.profile = { ...this.profile, ...profile };
     }
 }
