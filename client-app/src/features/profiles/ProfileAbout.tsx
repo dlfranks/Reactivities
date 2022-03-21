@@ -1,12 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
-import { Button, Form, Grid, Header, Tab, Input, TextArea, } from 'semantic-ui-react';
+import React, { ChangeEvent,  useState } from 'react';
+import { Button, Form, Grid, Header, Tab} from 'semantic-ui-react';
 import { Profile } from '../../app/models/profile';
 import { useStore } from '../../app/stores/store';
-import { profile } from 'console';
-import { history } from '../../index';
-import { useHistory } from 'react-router-dom';
-
 
 interface Props{
     profile: Profile;
@@ -14,8 +10,6 @@ interface Props{
 export default observer(function ProfileAbout({ profile }: Props) {
     const { profileStore: { isCurrentUser, updateProfile, loading, setProfile } } = useStore();
     const [editMode, setEditMode] = useState(false);
-    const history = useHistory();
-    
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

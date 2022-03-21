@@ -1,8 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Button, Card, Grid, Header, Tab, Image } from "semantic-ui-react";
 import { Profile, Photo } from '../../app/models/profile';
-import { profile } from 'console';
-import ProfileStore from '../../app/stores/profileStore';
 import { useStore } from "../../app/stores/store";
 import { SyntheticEvent, useState } from "react";
 import PhotoUploadWidget from '../../app/common/imageUpload/PhotoUploadWidget';
