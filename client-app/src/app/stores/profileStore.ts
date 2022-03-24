@@ -2,6 +2,7 @@ import { Photo, Profile } from './../models/profile';
 import { makeAutoObservable, runInAction, reaction } from 'mobx';
 import agent from '../api/agent';
 import { store } from './store';
+import { UserActivity } from '../models/userActivity';
 
 export default class ProfileStore {
     profile: Profile | null = null;
@@ -11,6 +12,9 @@ export default class ProfileStore {
     followings: Profile[] = [];
     loadingFollowings: boolean = false;
     activeTab = 0;
+    userActivities: UserActivity[] = [];
+    eventTab = 0;
+    loadingUserActivities = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -24,8 +28,36 @@ export default class ProfileStore {
                 } else {
                     this.followings = [];
                 }
+                if (activeTab === 2) {
+                    this.setEventTab(0);
+                    this.loadUserActivities('future');
+                }
             }
         )
+        reaction(
+            () => this.eventTab,
+            eventTab => {
+                let predicate = '';
+                switch (eventTab) {
+                    case 0:
+                        predicate = 'future';
+                        break;
+                    case 1: 
+                        predicate = 'past';
+                        break;
+                    case 2:
+                        predicate = 'isHost';
+                        break;
+                }
+                this.loadUserActivities(predicate);
+                
+            }
+        )
+    }
+
+    setEventTab = (eventTab: any) => {
+        this.eventTab = eventTab;
+        
     }
 
     setActiveTab = (activeTab: any) => {
@@ -176,5 +208,20 @@ export default class ProfileStore {
             runInAction(() => this.loadingFollowings = false);
         }
 
+    }
+
+    loadUserActivities = async (predicate: string) => {
+        this.loadingUserActivities = true;
+        try {
+            const userActivities = await agent.Profiles.listUserActivities(this.profile!.username, predicate);
+            runInAction(() => {
+                this.userActivities = userActivities;
+                this.loadingUserActivities = false;
+            })
+            
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loadingUserActivities = false);
+        }
     }
 }

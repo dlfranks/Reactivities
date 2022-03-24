@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useStore } from '../../app/stores/store';
 import React, { useEffect } from 'react';
 import LoadingComponent from '../../app/layout/LoadingComponent';
-import ProfileContent from './profileContent';
+import ProfileContent from './ProfileContent';
 
 export default observer(function ProfilePage() {
     const { username } = useParams<{ username: string }>();
