@@ -8,6 +8,6 @@ namespace Domain
         public string Body { get; set; }
         public AppUser Author { get; set; }
         public Activity Activity { get; set; }
-        public DateTimeOffset Createdat { get; set; } = DateTime.UtcNow;
+        public DateTime Createdat { get; set; } = DateTime.UtcNow;
     }
 }
