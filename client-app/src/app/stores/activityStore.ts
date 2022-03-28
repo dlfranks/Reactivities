@@ -5,9 +5,6 @@ import { format } from 'date-fns';
 import { store } from './store';
 import { Activity, ActivityFormValues } from '../models/activity';
 import { Pagination, PagingParams } from '../models/pagination';
-import axios from 'axios';
-
-
 
 export default class ActivityStore {
     //activities: Activity[] = [];

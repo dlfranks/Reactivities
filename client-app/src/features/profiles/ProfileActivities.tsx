@@ -9,7 +9,7 @@ import { useStore } from "../../app/stores/store";
 const panes = [
     { menuItem: 'Future Events', pane: { key: 'future' } },
     { menuItem: 'Past Events', pane: { key: 'past' } },
-    { menuItem: 'Hosting', pane: { key: 'isHost' } }
+    { menuItem: 'Hosting', pane: { key: 'hosting' } }
 ];
 
 export default observer(function ProfileActivities() {
