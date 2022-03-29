@@ -15,6 +15,7 @@ namespace API
     {
         public static async Task Main(string[] args)
         {
+            //Npgsql.EnableLegacyTimestampBehavior
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
@@ -28,7 +29,7 @@ namespace API
                     services.GetRequiredService<DataContext>();
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     await context.Database.MigrateAsync();
-                    await Seed.SeedData(context, userManager);              
+                    await Seed.SeedData(context, userManager);
 
 
                 }
@@ -39,9 +40,9 @@ namespace API
                     logger.LogError(ex, "An error occured during migration");
                 }
             }
-            
+
             await host.RunAsync();
-            
+
 
 
         }
