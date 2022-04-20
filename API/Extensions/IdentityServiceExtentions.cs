@@ -68,9 +68,6 @@ namespace API.Extensions
             return services;
         }
 
-        private static void JwtBearerDefau(AuthenticationOptions obj)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

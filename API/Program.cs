@@ -1,56 +1,90 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Domain;
-using Persistence;
+using Application.Activities;
 
-namespace API
+var builder = WebApplication.CreateBuilder(args);
+
+//Add services to container
+
+builder.Services.AddControllers(opt =>
 {
-    public class Program
-    {
-        public static async Task Main(string[] args)
-        {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    opt.Filters.Add(new AuthorizeFilter(policy));
 
+}).AddFluentValidation(config =>
+{
+    config.RegisterValidatorsFromAssemblyContaining<Create>();
+});
+builder.Services.ApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
-                try
-                {
-                    var context =
-                    services.GetRequiredService<DataContext>();
-                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                    await context.Database.MigrateAsync();
-                    await Seed.SeedData(context, userManager);
+// Configure the http request pipeline
 
+var app = builder.Build();
 
-                }
-                catch (Exception ex)
-                {
-                    var logger =
-                    services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occured during migration");
-                }
-            }
+app.UseMiddleware<ExceptionMiddleware>();
 
-            await host.RunAsync();
+app.UseXContentTypeOptions();
+app.UseReferrerPolicy(opt => opt.NoReferrer());
+app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
+app.UseXfo(opt => opt.Deny());
+app.UseCspReportOnly(opt => opt
+    .BlockAllMixedContent()
+    .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+    .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
+    .FormActions(s => s.Self())
+    .FrameAncestors(s => s.Self())
+    .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com"))
+    .ScriptSources(s => s.Self().CustomSources("sha256-QDZHF4kY8LFThT+cR+jglNY5lL7ytT25I96Fq6k2xbE="))
+);
 
-
-
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
 }
+
+//app.UseHttpsRedirection();
+
+//app.UseRouting();
+
+//find index.html, the order of these after app.UseRouting()
+app.UseDefaultFiles();
+//find  thewwwroot folder
+app.UseStaticFiles();
+
+
+app.UseCors("CorsPolicy");
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapControllers();
+app.MapHub<ChatHub>("/chat");
+app.MapFallbackToController("Index", "fallback");
+
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+using var scope = app.Services.CreateScope();
+
+var services = scope.ServiceProvider;
+
+
+try
+{
+    var context =
+    services.GetRequiredService<DataContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedData(context, userManager);
+
+
+}
+catch (Exception ex)
+{
+    var logger =
+    services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occured during migration");
+}
+await app.RunAsync();
+      
